@@ -98,7 +98,10 @@ class ResumableFile(object):
             raise Exception('Chunk(s) still missing')
         outfile = tempfile.NamedTemporaryFile("w+b")
         for chunk in self.chunk_names:
-            outfile.write(self.chunk_storage.open(chunk).read())
+            try:
+                outfile.write(self.chunk_storage.open(chunk).read())
+            except Exception:
+                outfile.write(self.chunk_storage.open(chunk).read())
         return outfile
 
     @property
